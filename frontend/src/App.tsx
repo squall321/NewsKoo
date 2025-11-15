@@ -1,12 +1,36 @@
-import './app.css';
+import { NavLink, Route, Routes } from 'react-router-dom';
+import Home from './pages/Home';
+import Articles from './pages/Articles';
+import { useHealthCheck } from './hooks/useHealthCheck';
 
-export function App() {
+const App = () => {
+  const { status, message } = useHealthCheck();
+
   return (
-    <main>
-      <h1>NewsKoo</h1>
-      <p>해외 유머 콘텐츠를 한국 사용자에게 전달하기 위한 번역 파이프라인을 준비 중입니다.</p>
-    </main>
+    <div>
+      <nav className="navbar">
+        <NavLink to="/" end className={({ isActive }) => (isActive ? 'active' : '')}>
+          Home
+        </NavLink>
+        <NavLink to="/articles" className={({ isActive }) => (isActive ? 'active' : '')}>
+          Articles
+        </NavLink>
+      </nav>
+
+      <div className={`health-banner ${status}`}>
+        {status === 'loading' && 'Checking API health...'}
+        {status === 'ok' && `API healthy: ${message}`}
+        {status === 'error' && `API issue: ${message}`}
+      </div>
+
+      <main>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/articles" element={<Articles />} />
+        </Routes>
+      </main>
+    </div>
   );
-}
+};
 
 export default App;
