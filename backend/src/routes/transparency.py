@@ -18,6 +18,7 @@ def list_logs(_: Request) -> Response:
             "total": _service.total_entries,
             "limit": 10,
             "guardrails": "docs/strategy/translation-guardrails.md",
+            "guardrail_budget": _service.guardrail_snapshot().to_dict(),
         },
     }
     return Response.json(payload)
