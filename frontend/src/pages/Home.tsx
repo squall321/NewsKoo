@@ -1,11 +1,14 @@
 import { useMemo } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { usePhaseData } from '../hooks/usePhaseData';
+import { useRevenuePlan } from '../hooks/useRevenuePlan';
+import type { RevenueBundle } from '../types/revenue';
 import { useArticlesStore } from '../store';
 
 const Home = () => {
   const { articles, featuredCategory, setFeaturedCategory } = useArticlesStore();
   const { progress, readiness, status: readinessStatus, source: readinessSource } = usePhaseData();
+  const { plan: revenuePlan, status: revenueStatus, source: revenueSource } = useRevenuePlan();
 
   const featuredArticles = useMemo(
     () => articles.filter((article) => article.category === featuredCategory),
@@ -14,6 +17,14 @@ const Home = () => {
 
   const categories = useMemo(() => Array.from(new Set(articles.map((a) => a.category))), [articles]);
   const readinessLoaded = readinessStatus !== 'loading' && readiness;
+  const revenueLoaded = revenueStatus !== 'loading' && revenuePlan;
+  const bundleLookup = useMemo(() => {
+    const entries: Record<string, RevenueBundle> = {};
+    revenuePlan.bundles.forEach((bundle) => {
+      entries[bundle.bundle_id] = bundle;
+    });
+    return entries;
+  }, [revenuePlan]);
 
   return (
     <section>
@@ -189,6 +200,106 @@ const Home = () => {
               </div>
             </div>
           </div>
+
+          {revenueLoaded && (
+            <div className="panel">
+              <h2>Phase 008 revenue hypotheses</h2>
+              <p className="meta-note">
+                Synced via {revenueSource === 'api' ? 'live API' : 'embedded blueprint'} · Approvals:{' '}
+                {revenuePlan.approvals.decision_log.join(', ')}
+              </p>
+
+              <div className="hypothesis-grid">
+                {revenuePlan.hypotheses.map((hypothesis) => {
+                  const bundle = bundleLookup[hypothesis.bundle_id];
+                  return (
+                    <article key={hypothesis.hypothesis_id} className="hypothesis-card">
+                      <header>
+                        <span className="badge">{hypothesis.hypothesis_id}</span>
+                        <h3>{hypothesis.title}</h3>
+                      </header>
+                      <p>{hypothesis.statement}</p>
+                      <p className="trust-hint">Segments: {hypothesis.target_segments.join(', ')}</p>
+                      <p className="trust-hint">Success: {hypothesis.success_metrics.join(' · ')}</p>
+                      <p className="trust-hint">Evidence: {hypothesis.evidence.join(' / ')}</p>
+                      {bundle && (
+                        <p className="trust-hint">Bundle: {bundle.name}</p>
+                      )}
+                    </article>
+                  );
+                })}
+              </div>
+
+              <h3>Bundles & guardrails</h3>
+              <div className="bundle-grid">
+                {revenuePlan.bundles.map((bundle) => (
+                  <article key={bundle.bundle_id} className="bundle-card">
+                    <header>
+                      <h4>{bundle.name}</h4>
+                      <p className="trust-hint">Categories: {bundle.categories.join(', ')}</p>
+                    </header>
+                    <ul>
+                      {bundle.deliverables.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                    <p className="trust-hint">KPI: {bundle.kpi_reporting.join(', ')}</p>
+                    <p className="trust-hint">Pricing: {bundle.pricing_model}</p>
+                    <p className="trust-hint">Dependencies: {bundle.dependencies.join(', ')}</p>
+                  </article>
+                ))}
+              </div>
+
+              <h3>Experiment roadmap</h3>
+              <div className="experiment-table-wrapper">
+                <table className="experiment-table">
+                  <thead>
+                    <tr>
+                      <th>Experiment</th>
+                      <th>Metric</th>
+                      <th>Schedule</th>
+                      <th>Issues</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {revenuePlan.experiments.map((experiment) => (
+                      <tr key={experiment.experiment_id}>
+                        <td>
+                          <strong>{experiment.experiment_id}</strong>
+                          <p className="trust-hint">{experiment.hypothesis_id}</p>
+                        </td>
+                        <td>{experiment.goal_metric}</td>
+                        <td>{experiment.schedule}</td>
+                        <td>{experiment.issue_tags.join(', ')}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div className="guardrail-grid">
+                <article className="guardrail-card">
+                  <h4>Guardrails</h4>
+                  <p>Model policy: {revenuePlan.guardrails.model_policy}</p>
+                  <p>Source policy: {revenuePlan.guardrails.source_policy}</p>
+                  <p>Cost ceiling: {revenuePlan.guardrails.cost_ceiling}</p>
+                  <a className="cta-link" href={revenuePlan.guardrails.reference_doc}>
+                    View translation guardrails
+                  </a>
+                </article>
+                <article className="guardrail-card">
+                  <h4>Dependencies</h4>
+                  <ul>
+                    {revenuePlan.dependencies.map((dependency) => (
+                      <li key={dependency.id}>
+                        <strong>{dependency.id}</strong>: {dependency.description} ({dependency.issue_tags.join(', ')})
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </div>
+            </div>
+          )}
         </>
       )}
     </section>

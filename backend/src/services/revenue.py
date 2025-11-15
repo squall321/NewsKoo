@@ -1,0 +1,252 @@
+"""Phase 008 revenue blueprint domain objects."""
+from __future__ import annotations
+
+from dataclasses import asdict, dataclass
+from datetime import datetime, timezone
+from typing import Any, Dict, List
+
+
+@dataclass(slots=True)
+class RevenueBundle:
+    """Represents a monetisation package bundled with specific categories."""
+
+    bundle_id: str
+    name: str
+    categories: List[str]
+    deliverables: List[str]
+    kpi_reporting: List[str]
+    pricing_model: str
+    floor_cpm: int
+    notes: str
+    guardrail_ref: str
+    dependencies: List[str]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(slots=True)
+class RevenueHypothesis:
+    """Phase 008 revenue hypothesis definition."""
+
+    hypothesis_id: str
+    title: str
+    statement: str
+    bundle_id: str
+    target_segments: List[str]
+    evidence: List[str]
+    success_metrics: List[str]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass(slots=True)
+class RevenueExperiment:
+    """Experiment entry validating a hypothesis."""
+
+    experiment_id: str
+    hypothesis_id: str
+    goal_metric: str
+    schedule: str
+    dependencies: List[str]
+    issue_tags: List[str]
+    status: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return asdict(self)
+
+
+class PhaseEightRevenuePlanService:
+    """Expose the approved Phase 008 revenue hypotheses and guardrails."""
+
+    def __init__(self) -> None:
+        self._plan = self._build_plan()
+
+    @staticmethod
+    def _ts() -> str:
+        return datetime(2024, 6, 18, 10, tzinfo=timezone.utc).isoformat()
+
+    def _build_plan(self) -> Dict[str, Any]:
+        guardrail_ref = "docs/strategy/translation-guardrails.md"
+        bundles = [
+            RevenueBundle(
+                bundle_id="ops-product-boost",
+                name="Ops/Product Sponsor Boost",
+                categories=["Ops Laugh Lab", "Product Panic Room"],
+                deliverables=[
+                    "10 guaranteed sponsor slots per week",
+                    "Auto-attached KPI PDF + CSV exports",
+                    "Curator review notes per slot",
+                ],
+                kpi_reporting=["curation_throughput", "majr", "session_time"],
+                pricing_model="Guaranteed flight + bonus CPM uplift",
+                floor_cpm=118,
+                notes="Extends Phase 007 KPI tagging rules into sponsor-ready dashboards.",
+                guardrail_ref=guardrail_ref,
+                dependencies=["Phase 018 data pipeline", "Phase 019 workflow"],
+            ),
+            RevenueBundle(
+                bundle_id="transparency-proof",
+                name="Transparency Evidence Pack",
+                categories=["Template Library", "Transparency Logs"],
+                deliverables=[
+                    "Pre-sale PDF of translation logs",
+                    "Reusable rewrite templates",
+                    "Signed compliance memo from Legal",
+                ],
+                kpi_reporting=["partner_conversion", "cycle_time"],
+                pricing_model="Subscription add-on (per partner seat)",
+                floor_cpm=0,
+                notes="Designed to lift partner conversion before paid media kicks off.",
+                guardrail_ref=guardrail_ref,
+                dependencies=["Phase 018 log pipeline", "Phase 024 partner onboarding"],
+            ),
+            RevenueBundle(
+                bundle_id="exec-premium",
+                name="Exec Premium Insights",
+                categories=["Exec Trend Roast", "All-hands Catch-up"],
+                deliverables=[
+                    "48h early access feed",
+                    "Custom CTA template set",
+                    "Weekly revenue proof deck",
+                ],
+                kpi_reporting=["arpu", "push_ctr", "partner_reports"],
+                pricing_model="Tiered subscription (per exec seat)",
+                floor_cpm=0,
+                notes="Pairs visual reports with All-hands recap to upsell enterprise readers.",
+                guardrail_ref=guardrail_ref,
+                dependencies=["Phase 011 notifications", "Phase 090 CTA templates"],
+            ),
+        ]
+
+        hypotheses = [
+            RevenueHypothesis(
+                hypothesis_id="HYP-008A",
+                title="Ops/Product bundle raises CPM",
+                statement=(
+                    "If Ops Laugh Lab and Product Panic Room are bundled with KPI dashboards,"
+                    " sponsor CPM climbs 18% because the buyer sees direct throughput impact."
+                ),
+                bundle_id="ops-product-boost",
+                target_segments=["운영 리더", "PM"],
+                evidence=[
+                    "Phase 003 panel requests for KPI-linked slots",
+                    "Phase 007 calendar dedicating 10 weekly slots",
+                ],
+                success_metrics=["+18% CPM", "report download rate >= 70%"],
+            ),
+            RevenueHypothesis(
+                hypothesis_id="HYP-008B",
+                title="Transparency proof plan shortens sales cycles",
+                statement=(
+                    "Packaging translation logs + rewrite templates as a proof deck adds"
+                    " enough trust to lift partner conversion by 12 percentage points."
+                ),
+                bundle_id="transparency-proof",
+                target_segments=["Legal", "Agency enablement", "광고 파트너"],
+                evidence=[
+                    "Phase 003 advertiser interviews blocking budget without logs",
+                    "Legal requirement to document guardrail compliance",
+                ],
+                success_metrics=["+12pp trial-to-contract", "<=15 day sales cycle"],
+            ),
+            RevenueHypothesis(
+                hypothesis_id="HYP-008C",
+                title="Exec early access upsells ARPU",
+                statement=(
+                    "Offering Exec Trend Roast + All-hands Catch-up 48h early with"
+                    " premium CTAs can raise ARPU 1.6x among executive readers."
+                ),
+                bundle_id="exec-premium",
+                target_segments=["경영진", "광고주", "프리미엄 독자"],
+                evidence=[
+                    "Exec interviews preferring infographic bundles",
+                    "Marketing teams requesting curated push templates",
+                ],
+                success_metrics=[">=1.6x ARPU", "Push CTR >= 40%"],
+            ),
+        ]
+
+        experiments = [
+            RevenueExperiment(
+                experiment_id="EX-008-01",
+                hypothesis_id="HYP-008A",
+                goal_metric="Bundle CPM + report downloads",
+                schedule="2024-07-01 week",
+                dependencies=["Phase 018 data pipeline"],
+                issue_tags=["#ISS-188"],
+                status="scheduled",
+            ),
+            RevenueExperiment(
+                experiment_id="EX-008-02",
+                hypothesis_id="HYP-008B",
+                goal_metric="Trial to contract conversion",
+                schedule="2024-07-08 week",
+                dependencies=["Phase 024 partner onboarding"],
+                issue_tags=["#ISS-205"],
+                status="scheduled",
+            ),
+            RevenueExperiment(
+                experiment_id="EX-008-03",
+                hypothesis_id="HYP-008C",
+                goal_metric="Exec ARPU + push CTR",
+                schedule="2024-07-15 week",
+                dependencies=["Phase 011 notifications", "Phase 090 CTA templates"],
+                issue_tags=["#ISS-219", "#ISS-233"],
+                status="scheduled",
+            ),
+        ]
+
+        dependencies = [
+            {
+                "id": "DEC-037",
+                "description": "Ops/Product bundle requires KPI tagging automation",
+                "issue_tags": ["#ISS-241"],
+                "phases": ["Phase 011", "Phase 019"],
+            },
+            {
+                "id": "DEC-038",
+                "description": "Transparency packs limited to local 7B~8B models per guardrails",
+                "issue_tags": ["#ISS-205"],
+                "phases": ["Phase 018", "Phase 024"],
+            },
+            {
+                "id": "DEC-039",
+                "description": "Exec premium launch aligned with CTA template refresh",
+                "issue_tags": ["#ISS-233"],
+                "phases": ["Phase 011", "Phase 090"],
+            },
+        ]
+
+        guardrails = {
+            "reference_doc": guardrail_ref,
+            "model_policy": "Use LLaMA-3-8B 4bit or Qwen2-7B local pipelines only.",
+            "source_policy": "Every slot must retain original link + author metadata.",
+            "cost_ceiling": "16GB GPU, <=30 inference hours per week",
+            "approval_path": "Legal + Revenue leads sign off before enabling paid API usage.",
+        }
+
+        approvals = {
+            "workshop": "Phase 008 stakeholder workshop (2024-06-18)",
+            "decision_log": ["DEC-036", "DEC-037", "DEC-038", "DEC-039"],
+            "risk_register": ["RSK-036", "RSK-037", "RSK-038", "RSK-039"],
+        }
+
+        return {
+            "phase": "008",
+            "last_synced_at": self._ts(),
+            "guardrails": guardrails,
+            "bundles": [bundle.to_dict() for bundle in bundles],
+            "hypotheses": [hypothesis.to_dict() for hypothesis in hypotheses],
+            "experiments": [experiment.to_dict() for experiment in experiments],
+            "dependencies": dependencies,
+            "approvals": approvals,
+        }
+
+    @property
+    def plan(self) -> Dict[str, Any]:
+        return self._plan
+
+
+phase_eight_revenue_service = PhaseEightRevenuePlanService()
