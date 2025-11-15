@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass
 from http import HTTPStatus
-from typing import Callable, Dict, List, Tuple
+from typing import Any, Callable, Dict, List, Tuple
 
 
 @dataclass
@@ -35,14 +35,14 @@ class Response:
     body: bytes
 
     @classmethod
-    def json(cls, payload: Dict[str, str], status_code: int = 200) -> "Response":
+    def json(cls, payload: Dict[str, Any], status_code: int = 200) -> "Response":
         return cls(
             status_code=status_code,
             headers={"Content-Type": "application/json"},
             body=json.dumps(payload).encode("utf-8"),
         )
 
-    def json_body(self) -> Dict[str, str]:
+    def json_body(self) -> Dict[str, Any]:
         return json.loads(self.body.decode("utf-8"))
 
 

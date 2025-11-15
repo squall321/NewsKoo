@@ -9,7 +9,7 @@ from backend.src.middleware.logging import (
     error_handling_middleware,
     request_logging_middleware,
 )
-from backend.src.routes.health import register_routes
+from backend.src.routes import register_routes
 from backend.src.server import Application, Request, Response
 
 
