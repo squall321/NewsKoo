@@ -19,13 +19,60 @@ class TranslationLogEntry:
     status: str
     last_synced_at: str
     guardrail_notes: str
+    gpu_seconds: int
+    api_calls: int
 
     def to_dict(self) -> dict:
         return asdict(self)
 
 
+@dataclass(slots=True)
+class GuardrailBudgetSnapshot:
+    """Represents weekly GPU/API consumption against guardrail budgets."""
+
+    window: str
+    gpu_seconds_budget: int
+    gpu_seconds_used: int
+    api_calls_budget: int
+    api_calls_used: int
+
+    @property
+    def gpu_seconds_remaining(self) -> int:
+        return max(self.gpu_seconds_budget - self.gpu_seconds_used, 0)
+
+    @property
+    def api_calls_remaining(self) -> int:
+        return max(self.api_calls_budget - self.api_calls_used, 0)
+
+    @property
+    def is_within_budget(self) -> bool:
+        return (
+            self.gpu_seconds_used <= self.gpu_seconds_budget
+            and self.api_calls_used <= self.api_calls_budget
+        )
+
+    def to_dict(self) -> dict:
+        return {
+            "window": self.window,
+            "gpu_seconds": {
+                "budget": self.gpu_seconds_budget,
+                "used": self.gpu_seconds_used,
+                "remaining": self.gpu_seconds_remaining,
+            },
+            "api_calls": {
+                "budget": self.api_calls_budget,
+                "used": self.api_calls_used,
+                "remaining": self.api_calls_remaining,
+            },
+            "status": "within_budget" if self.is_within_budget else "over_budget",
+        }
+
+
 class TransparencyLogService:
     """Simple in-memory service to expose recent transparency logs."""
+
+    GPU_SECONDS_WEEKLY_BUDGET = 6 * 60 * 60  # 6 GPU hours/week per guardrail plan
+    API_CALLS_WEEKLY_BUDGET = 10  # guardrail doc: keep paid API usage exceptional
 
     def __init__(self, entries: List[TranslationLogEntry] | None = None) -> None:
         if entries is None:
@@ -46,6 +93,8 @@ class TransparencyLogService:
                 status="approved",
                 last_synced_at=now.isoformat(),
                 guardrail_notes="translation-guardrails.md#style-conversion",
+                gpu_seconds=340,
+                api_calls=0,
             ),
             TranslationLogEntry(
                 log_id="LOG-20240512-002",
@@ -57,6 +106,8 @@ class TransparencyLogService:
                 status="needs_review",
                 last_synced_at=now.isoformat(),
                 guardrail_notes="flagged for tone polishing",
+                gpu_seconds=415,
+                api_calls=0,
             ),
             TranslationLogEntry(
                 log_id="LOG-20240512-003",
@@ -68,6 +119,8 @@ class TransparencyLogService:
                 status="shared_with_partner",
                 last_synced_at=now.isoformat(),
                 guardrail_notes="partner export redacted user handles",
+                gpu_seconds=520,
+                api_calls=1,
             ),
         ]
 
@@ -78,3 +131,14 @@ class TransparencyLogService:
     @property
     def total_entries(self) -> int:
         return len(self._entries)
+
+    def guardrail_snapshot(self) -> GuardrailBudgetSnapshot:
+        gpu_used = sum(entry.gpu_seconds for entry in self._entries)
+        api_used = sum(entry.api_calls for entry in self._entries)
+        return GuardrailBudgetSnapshot(
+            window="rolling-7d",
+            gpu_seconds_budget=self.GPU_SECONDS_WEEKLY_BUDGET,
+            gpu_seconds_used=gpu_used,
+            api_calls_budget=self.API_CALLS_WEEKLY_BUDGET,
+            api_calls_used=api_used,
+        )
