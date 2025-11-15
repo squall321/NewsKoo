@@ -41,10 +41,12 @@ React + Vite로 구성된 초기 프론트엔드 앱은 `frontend/`에 위치합
    ```bash
    python -m backend.src.main
    ```
+5. Phase 002에서 정의한 투명성 로그 프로토타입을 확인하려면 `/transparency/logs` 엔드포인트를 호출해 최근 번역/검수 로그 샘플을 받아볼 수 있습니다. 응답에는 모델명, 추론 시간, 검수자, 가드레일 메모가 포함됩니다.
 
 ### 테스트 실행
 ```bash
 python -m unittest backend.tests.test_health
+python -m unittest backend.tests.test_transparency
 ```
 ## Backend database setup
 
