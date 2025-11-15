@@ -29,6 +29,44 @@ NewsKoo는 해외 유머 콘텐츠를 자동으로 수집·번역·검수하여 
 ```bash
 python -m unittest backend.tests.test_health
 ```
+## Backend database setup
+
+백엔드 서비스는 PostgreSQL 15를 기본 데이터 저장소로 사용하며, `backend/src/db/models.py`에 정의된 SQLAlchemy 모델을 기준으로 생성됩니다. 애플리케이션이 참조하는 핵심 환경 변수는 다음과 같습니다.
+
+| 환경 변수 | 기본값 | 설명 |
+| --- | --- | --- |
+| `DB_USER` | `newskoo` | 데이터베이스 사용자명 |
+| `DB_PASSWORD` | `newskoo` | 데이터베이스 비밀번호 |
+| `DB_HOST` | `localhost` | 접속 호스트명 |
+| `DB_PORT` | `5432` | PostgreSQL 포트 |
+| `DB_NAME` | `newskoodb` | 데이터베이스 이름 |
+
+`backend/src/db/config.py`와 `backend/src/db/session.py`가 위 환경 변수를 읽어 SQLAlchemy 엔진과 세션을 생성합니다. `backend/migrations/001_initial.py` 스크립트를 실행하면 모든 테이블을 한 번에 생성할 수 있습니다.
+
+## Local docker-compose services
+
+로컬 개발자는 다음 예시 `docker-compose.yml` 조각을 프로젝트 루트에 추가해 데이터베이스를 손쉽게 실행할 수 있습니다.
+
+```yaml
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: newskoo-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: newskoo
+      POSTGRES_PASSWORD: newskoo
+      POSTGRES_DB: newskoodb
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres-data:
+```
+
+컨테이너가 올라오면 `python backend/migrations/001_initial.py` 명령으로 스키마를 초기화하고, 애플리케이션 환경 변수만 맞춰주면 곧바로 CRUD 기능을 테스트할 수 있습니다.
 ## 기술 스택
 | 영역 | 기술 | 비고 |
 | --- | --- | --- |
