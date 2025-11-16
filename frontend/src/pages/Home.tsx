@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { usePhaseData } from '../hooks/usePhaseData';
 import { useRevenuePlan } from '../hooks/useRevenuePlan';
+import { journeyMessagingExamples } from '../data/journeyMessaging';
+import { translationGuardrailStack } from '../data/translationGuardrails';
 import type { RevenueBundle } from '../types/revenue';
 import { useArticlesStore } from '../store';
 
@@ -102,6 +104,62 @@ const Home = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      <div className="panel">
+        <h2>Translation guardrail stack</h2>
+        <p className="meta-note">
+          Phase 010 tone & format guide enforces shared metadata, runtime limits, and reference docs for every copy block.
+        </p>
+        <div className="guardrail-grid">
+          <article className="guardrail-card">
+            <h4>필수 메타데이터</h4>
+            <ul>
+              {translationGuardrailStack.metadataFields.map((field) => (
+                <li key={field}>{field}</li>
+              ))}
+            </ul>
+            <p className="trust-hint">CTA footer: “Rewritten for Korean punchlines per translation guardrails.”</p>
+          </article>
+          <article className="guardrail-card">
+            <h4>Runtime limits</h4>
+            <p>
+              Guardrail: {translationGuardrailStack.runtimeLimits.slaMinutes} min SLA ·{' '}
+              {translationGuardrailStack.runtimeLimits.gpuHoursPerWeek} GPUh/wk
+            </p>
+            <p className="trust-hint">{translationGuardrailStack.modelPolicy}</p>
+          </article>
+          <article className="guardrail-card">
+            <h4>Rewrite policy</h4>
+            <p>{translationGuardrailStack.rewritePolicy}</p>
+            <p className="trust-hint">
+              Reference: {translationGuardrailStack.references.issues.join(', ')} ·{' '}
+              <a className="cta-link" href={translationGuardrailStack.references.doc}>
+                translation guardrails
+              </a>
+            </p>
+          </article>
+        </div>
+      </div>
+
+      <div className="panel">
+        <h2>User journey messaging</h2>
+        <p>Segments mapped to tone pillars with copy, proof hooks, and guardrail memos.</p>
+        <div className="segment-grid">
+          {journeyMessagingExamples.map((journey) => (
+            <article key={journey.id} className="segment-card">
+              <header>
+                <h3>{journey.title}</h3>
+                <p className="trust-hint">{journey.persona}</p>
+              </header>
+              <p className="segment-list">상황: {journey.situation}</p>
+              <p className="segment-list">Copy: {journey.copy}</p>
+              <p className="segment-list">Proof hook: {journey.proofHook}</p>
+              <p className="segment-list">UI 위치: {journey.uiPlacement}</p>
+              <p className="segment-list">Guardrail 메모: {journey.guardrailMemo}</p>
+            </article>
+          ))}
+        </div>
       </div>
 
       {readinessLoaded && (
