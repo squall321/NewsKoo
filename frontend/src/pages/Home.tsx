@@ -135,6 +135,11 @@ const Home = () => {
                   <p className="segment-list">Pains: {segment.pains.join(', ')}</p>
                   <p className="segment-list">Gains: {segment.gains.join(', ')}</p>
                   <p className="segment-list">Toggles: {segment.toggles.join(', ')}</p>
+                  <p className="segment-list">Needs: {segment.content_needs}</p>
+                  <p className="segment-list">Tone: {segment.translation_tone}</p>
+                  <p className="segment-list">
+                    Monetization: {segment.monetization_hooks.join(', ')}
+                  </p>
                   <p className="segment-list">
                     Notifications: {segment.onboarding_defaults.notifications.join(', ')}
                   </p>
