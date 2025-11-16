@@ -61,9 +61,13 @@ class PhaseRoutesTests(unittest.TestCase):
         phase_014 = plans[0]
         self.assertIn("tasks", phase_014)
         self.assertGreaterEqual(len(phase_014["tasks"]), 4)
+        self.assertIn("notes", phase_014)
+        self.assertIn("docs/records/phase-014/", phase_014["notes"][0])
         for plan in plans:
             self.assertIn("guardrails", plan)
             self.assertIn("reference_doc", plan["guardrails"])
+            self.assertIn("notes", plan)
+            self.assertGreaterEqual(len(plan["notes"]), 1)
 
     def test_architecture_strategy_endpoint_exposes_phase_021_to_027(self):
         request = Request(method="GET", path="/phases/021-027", headers={}, body=b"")
@@ -83,6 +87,8 @@ class PhaseRoutesTests(unittest.TestCase):
         self.assertIn("tasks", first_plan)
         self.assertGreaterEqual(len(first_plan["tasks"]), 4)
         self.assertTrue(all("guardrails" in plan for plan in payload["plans"]))
+        self.assertTrue(all("notes" in plan for plan in payload["plans"]))
+        self.assertTrue(all(len(plan["notes"]) >= 2 for plan in payload["plans"]))
 
 
 if __name__ == "__main__":

@@ -31,6 +31,7 @@ class PhasePlan:
     storage_path: str
     tasks: List[PhaseTask]
     deliverables: List[str]
+    notes: List[str]
     success_metrics: List[str]
     timeline: List[Dict[str, str]]
     dependencies: List[str]
@@ -115,6 +116,11 @@ class PhaseStrategyService:
                     "Scorecard, SWOT, Feature-Value Matrix",
                     "워크숍 회의록과 후속 백로그",
                 ],
+                notes=[
+                    "산출물과 부가 데이터셋은 `docs/records/phase-014/`에 폴더 단위로 정리하고 버전 태그를 붙인다.",
+                    "워크숍에서 합의되지 않은 항목은 결정 대기(Needs-Decision) 태그로 다음 페이즈에 넘긴다.",
+                    "경쟁사 자료 활용 시 저작권·이용약관을 검토하고 인용 시 출처를 남긴다.",
+                ],
                 success_metrics=[
                     "주요 경쟁사/대체재 10곳 이상 커버",
                     "워크숍 합의율 90% 이상 & 액션 5건 도출",
@@ -177,6 +183,11 @@ class PhaseStrategyService:
                     "Messaging Pillar, 예시 카피/비주얼",
                     "실험 가설 표와 KPI/의존성 맵",
                 ],
+                notes=[
+                    "모든 자료는 `docs/records/phase-015/`에 업로드하고 민감 데이터는 접근 권한을 제한한다.",
+                    "가치 제안 문구는 용어사전과 동기화해 번역·현지화 작업과 일관성을 유지한다.",
+                    "설문 원천 데이터는 익명화 후 저장하고 개인정보 규정을 준수한다.",
+                ],
                 success_metrics=[
                     "핵심 세그먼트 3개 Canvas 완성",
                     "경영진 리뷰 Rework 10% 이하",
@@ -238,6 +249,11 @@ class PhaseStrategyService:
                     "KPI 후보 목록/평가표",
                     "KPI 트리 다이어그램 & 대시보드 와이어",
                     "거버넌스/Alert 정의서",
+                ],
+                notes=[
+                    "산출물은 `docs/records/phase-016/`에 저장하고 민감 로그 스키마는 접근 제어 저장소에 별도 관리한다.",
+                    "KPI 명칭은 영어/한국어 병기 후 용어사전과 동기화한다.",
+                    "측정 자동화가 어려운 지표는 기술 부채로 등록해 백로그에 포함한다.",
                 ],
                 success_metrics=[
                     "최종 지표 12개 이하 + 소스/주기 명시",
@@ -302,6 +318,11 @@ class PhaseStrategyService:
                     "운영 가이드 템플릿 + 샘플",
                     "파이프라인 Swimlane & PoC 계획",
                 ],
+                notes=[
+                    "산출물은 `docs/records/phase-017/`에 저장하고 대형 템플릿은 Figma/Notion 링크를 함께 남긴다.",
+                    "카테고리 명칭은 브랜드 Tone of Voice 가이드에 따라 카피라이터 검수를 거친다.",
+                    "데이터 의존 카테고리는 데이터팀과 SLA를 미리 합의해 병목을 방지한다.",
+                ],
                 success_metrics=[
                     "핵심 카테고리 6~8개 확정",
                     "워크숍 Must Fix 3건 이하",
@@ -363,6 +384,11 @@ class PhaseStrategyService:
                     "수익 스트림 비교 표 & 규제 조사",
                     "Lean Canvas/Value Chain 묶음",
                     "재무 시뮬레이션 + KPI 매핑 + 리스크/로드맵",
+                ],
+                notes=[
+                    "산출물은 `docs/records/phase-018/`에 보관하고 재무 시트는 버전 관리한다.",
+                    "파트너십/광고 레이트카드 등 민감 정보는 접근 제한 폴더에 저장한다.",
+                    "새로운 수익 아이디어는 Ideation Backlog에 기록해 후속 실험으로 연결한다.",
                 ],
                 success_metrics=[
                     "유효 수익 스트림 3건 Canvas+KPI 완료",
@@ -426,6 +452,11 @@ class PhaseStrategyService:
                     "상위 리스크 대응 플랜/오너십 매트릭스",
                     "모니터링 지표 & Alert 매핑 문서",
                 ],
+                notes=[
+                    "산출물은 `docs/records/phase-019/`에 저장하고 민감 리스크는 암호화된 스토리지에 별도 관리한다.",
+                    "리스크 상태는 Jira Risk Board와 동기화하고 상태 변경 시 자동 알림을 설정한다.",
+                    "외부 감사/투자 실사 대비를 위해 리스크 스냅샷 PDF를 생성해 보관한다.",
+                ],
                 success_metrics=[
                     "고/중 리스크 각각 5건 이상",
                     "Heat Map·대응 플랜 경영진 승인",
@@ -487,6 +518,11 @@ class PhaseStrategyService:
                     "Story Bank & 내러티브 아키텍처",
                     "브랜드 스토리 원페이저/피치덱/온보딩 카피/FAQ/톤보드",
                     "롤아웃 플랜 & 채널별 메시지 매트릭스",
+                ],
+                notes=[
+                    "산출물은 `docs/records/phase-020/`에 저장하고 외부 공유용과 내부용 버전을 구분한다.",
+                    "문화적 민감성을 위해 현지 에디터 또는 자문단 리뷰를 필수로 거친다.",
+                    "스토리텔링 프레임은 A/B 테스트 결과에 따라 업데이트할 수 있도록 버전 히스토리를 유지한다.",
                 ],
                 success_metrics=[
                     "마케팅·제품 리드 승인, 수정 3건 이하",
@@ -698,6 +734,10 @@ class PhaseStrategyService:
                     storage_path=spec["storage_path"],
                     tasks=tasks,
                     deliverables=deliverables,
+                    notes=[
+                        f"산출물은 {spec['storage_path']}에 버전 태그로 저장한다.",
+                        "ADR과 리뷰 피드백은 Issue Tracker/Runbook에 백필한다.",
+                    ],
                     success_metrics=success_metrics,
                     timeline=timeline,
                     dependencies=spec["dependencies"],
