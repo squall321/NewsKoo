@@ -25,3 +25,5 @@ API 스펙은 `docs/`에 추가될 예정입니다.
 | `GET /phases/progress` | Phase 003~007 구현 현황 카드 |
 | `GET /phases/readiness` | 세그먼트/카테고리/KPI 스냅샷 |
 | `GET /revenue/phase-008` | Phase 008 수익 가설·번들·실험·가드레일 페이로드 |
+| `GET /phases/014-020` | Phase 014~020 경쟁/가치/KPI/스토리 전략 계획 |
+| `GET /phases/021-027` | Phase 021~027 아키텍처·기술 스택 설계 플랜 |
