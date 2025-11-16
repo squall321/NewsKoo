@@ -161,6 +161,32 @@ class PhaseReadinessService:
                 ],
                 last_synced_at=self._timestamp(13),
             ),
+            PhaseProgress(
+                identifier="phase-011",
+                phase=11,
+                title="Vision & Requirements Alignment",
+                summary=(
+                    "Consolidates KPI catalog guardrails, sponsor proof bundles, role-based "
+                    "notifications, and telemetry hooks to feed Phases 012/018 backlog."
+                ),
+                status="documented",
+                requirements=["FR-041", "FR-042", "FR-043", "FR-044", "FR-045"],
+                delivered_capabilities=[
+                    "role_based_notifications",
+                    "sponsor_kpi_panel",
+                    "onboarding_bridge",
+                    "transparency_macro",
+                    "guardrail_telemetry",
+                ],
+                api_surface=[
+                    "/docs/records/phase-011/vision-and-requirements#fr-041",
+                    "/docs/records/phase-011/vision-and-requirements#fr-042",
+                    "/docs/records/phase-011/vision-and-requirements#fr-043",
+                    "/docs/records/phase-011/vision-and-requirements#fr-044",
+                    "/docs/records/phase-011/vision-and-requirements#fr-045",
+                ],
+                last_synced_at=self._timestamp(14),
+            ),
         ]
 
     def _build_readiness_snapshot(self) -> Dict[str, Any]:
@@ -521,6 +547,35 @@ class PhaseReadinessService:
                     "dev-standup-satires": {"leading": "3 bug CTA/day", "lagging": "+5% dev return"},
                     "exec-trend-roast": {"leading": "2 reports/week", "lagging": "+1 enterprise lead"},
                     "all-hands-catch-up": {"leading": "82% push CTR", "lagging": "+4% onboarding"},
+                },
+            },
+            "phase_011": {
+                "focus": [
+                    "role_based_notifications",
+                    "sponsor_kpi_panel",
+                    "guardrail_telemetry",
+                ],
+                "north_star": "월간 활성 직무 독자",
+                "functional_requirements": ["FR-041", "FR-042", "FR-043", "FR-044", "FR-045"],
+                "non_functional_requirements": ["NFR-025", "NFR-026", "NFR-027", "NFR-028"],
+                "dependencies": [
+                    "Phase 012 experiments",
+                    "Phase 018 telemetry",
+                    "Phase 019 sponsor workflow",
+                ],
+                "risks": [
+                    {"id": "RSK-044", "mitigation": "Single template engine + QA checklist"},
+                    {"id": "RSK-045", "mitigation": "KPI catalog sync + sponsor QA"},
+                    {"id": "RSK-046", "mitigation": "GPU telemetry hooks + cache fallback"},
+                ],
+                "issues": ["#ISS-311", "#ISS-312", "#ISS-313", "#ISS-314", "#ISS-315", "#ISS-316", "#ISS-317", "#ISS-318", "#ISS-319"],
+                "workshop": {
+                    "attendees": 10,
+                    "alignment_rate": 0.9,
+                    "unresolved": [
+                        "Exec pre-release scope pending Phase 012",
+                        "Partner widget customization pending Phase 018",
+                    ],
                 },
             },
         }
