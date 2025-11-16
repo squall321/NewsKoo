@@ -104,60 +104,100 @@ export const phaseReadinessFallback: PhaseReadiness = {
   },
   segments: [
     {
-      segment: '주니어 PM',
-      persona: 'Product generalist',
-      pains: ['번역체', '맥락 부족'],
-      gains: ['3분 내 이해', '원문 CTA'],
-      toggles: ['Product Panic Room'],
-      default_filters: ['Product Panic Room', 'All-hands Catch-up'],
-      onboarding_defaults: {
-        notifications: ['AM digest'],
-        categories: ['Product Panic Room'],
-      },
-    },
-    {
-      segment: '시니어 마케터',
-      persona: 'Brand steward',
-      pains: ['브랜드 안전성', '광고 피로'],
-      gains: ['투명성 배지', '파트너 위젯'],
-      toggles: ['Marketing Meme Board'],
-      default_filters: ['Marketing Meme Board', 'Exec Trend Roast'],
-      onboarding_defaults: {
-        notifications: ['Campaign alerts'],
-        categories: ['Marketing Meme Board'],
-      },
-    },
-    {
-      segment: '운영 큐레이터',
-      persona: 'Content ops',
-      pains: ['검수 시간', '모델 재실행'],
-      gains: ['템플릿 추천', '모델 캐시 제어'],
-      toggles: ['Ops Laugh Lab'],
+      segment: 'Ops 큐레이터',
+      persona: '사내 운영',
+      pains: ['25분 세션 내 검수 압박', '출처/모델 로그 전환'],
+      gains: ['카드·스트림 즉시 비교', '로그·버전 한 화면'],
+      toggles: ['Ops Laugh Lab', 'All-hands Catch-up'],
       default_filters: ['Ops Laugh Lab', 'All-hands Catch-up'],
+      content_needs:
+        '25분 집중 세션 안에 6~8건을 검수할 수 있도록 출처·번역 로그·모델 버전을 한 화면에서 확인하고 카드형/스트림형을 즉시 비교해야 한다.',
+      translation_tone:
+        '원문 구조를 유지하면서 오류·번역체를 표시해 빠르게 수정할 수 있는 "중립·메모형" 톤과 가드레일 준수 메시지를 자동 주석으로 노출.',
+      monetization_hooks: [
+        'Phase 019 큐레이션 타이머/우선순위 큐와 연결해 운영 비용 절감 KPI 추적',
+        'SLA 준수 로그를 스폰서 패키지 증빙으로 활용',
+      ],
       onboarding_defaults: {
         notifications: ['Batch readiness'],
         categories: ['Ops Laugh Lab'],
       },
     },
     {
-      segment: '모바일 독자',
-      persona: 'On-the-go reader',
-      pains: ['스크롤 피로', '광고 피로'],
-      gains: ['카드형 UX', '원탭 공유'],
+      segment: '프리랜스 콘텐츠 에디터',
+      persona: '외부 편집 파트너',
+      pains: ['카테고리 톤 지침 탐색', '법무 메모 누락'],
+      gains: ['원문 맥락/법무 메모 동시 확인', '톤 가이드 즉시 적용'],
+      toggles: ['Marketing Meme Board', 'Product Panic Room'],
+      default_filters: ['Marketing Meme Board', 'Product Panic Room'],
+      content_needs:
+        '카테고리 6종 톤 가이드를 바로 적용하고 원문 맥락과 법무 메모를 함께 확인해 2차 편집을 마칠 수 있어야 한다.',
+      translation_tone:
+        '"카테고리별 펀/프로페셔널 믹스"로 한국 독자에게 자연스러운 punchline을 강조하되 원문 CTA/저자 표기를 유지.',
+      monetization_hooks: [
+        '프리미엄 구독 번들에서 QA 비용 절감 근거 제공',
+        'Phase 018 투명성 로그와 연동한 검수 횟수 기반 과금 모델 실험',
+      ],
+      onboarding_defaults: {
+        notifications: ['Editorial wrap'],
+        categories: ['Marketing Meme Board'],
+      },
+    },
+    {
+      segment: '밈 애호가 독자 (모바일)',
+      persona: '커뮤니티 얼리어답터',
+      pains: ['출근길 3분 콘텐츠', '민감 소재 노출 걱정'],
+      gains: ['카드형 스크롤', '원문 스레드 손쉬운 공유'],
       toggles: ['Marketing Meme Board', 'All-hands Catch-up'],
-      default_filters: ['All-hands Catch-up'],
+      default_filters: ['Marketing Meme Board', 'All-hands Catch-up'],
+      content_needs:
+        '출근길 3분 내에 카드형으로 업계 밈을 소비하고 원문 스레드도 쉽게 찾아 공유할 수 있어야 한다.',
+      translation_tone:
+        '"구어체·짧은 문장 + 문화적 각색"으로 번역체를 최소화하고 punchline을 한국식으로 재작성, 민감 소재는 경고 배지로 명시.',
+      monetization_hooks: [
+        '카드형 뷰 하단 광고/추천 슬롯 운영',
+        'Phase 090 개인화 알림 CTA 실험(HYP-008A)로 CPM/구독 전환 추적',
+      ],
       onboarding_defaults: {
         notifications: ['Push personalization'],
         categories: ['All-hands Catch-up'],
       },
     },
     {
-      segment: '광고 파트너',
+      segment: '주니어 PM/마케터 독자',
+      persona: '실행 인사이트 수요자',
+      pains: ['근거 기반 사례 부족', '저작권/브랜드 세이프티 우려'],
+      gains: ['데이터 포인트 포함 요약', '출처 명확한 적용 팁'],
+      toggles: ['Product Panic Room', 'Exec Trend Roast'],
+      default_filters: ['Product Panic Room', 'Exec Trend Roast'],
+      content_needs:
+        '해외 트렌드 요약과 실행 인사이트(데이터 포인트, 참고 링크)가 포함된 스트림형 뷰를 선호하며 브랜드 세이프티나 저작권 논란 없는 사례를 원한다.',
+      translation_tone:
+        '"프로페셔널·근거 기반" 톤으로 수치/출처를 명확히 언급하고 한국 독자를 위한 적용 팁을 덧붙인다.',
+      monetization_hooks: [
+        '프리미엄 구독/리포트 업셀 리드 생성',
+        'Phase 024 세일즈 Enablement KPI 리포트 샘플·번들 판매(HYP-008B) 연계',
+      ],
+      onboarding_defaults: {
+        notifications: ['AM digest'],
+        categories: ['Product Panic Room'],
+      },
+    },
+    {
+      segment: '스폰서·광고 파트너',
       persona: 'Revenue stakeholder',
-      pains: ['비용 불투명', '출처 우려'],
-      gains: ['로컬 AI 비용 공개', 'Transparency Export'],
-      toggles: ['Exec Trend Roast'],
+      pains: ['브랜드 세이프티 증빙', '저작권/허가 추적'],
+      gains: ['투명성 로그', 'KPI 태깅/감사 체인'],
+      toggles: ['Exec Trend Roast', 'Marketing Meme Board'],
       default_filters: ['Exec Trend Roast', 'Marketing Meme Board'],
+      content_needs:
+        '브랜드 세이프티를 입증할 수 있는 투명성 로그, KPI 태깅, 검수자 감사 체인을 한 번에 확인하고 싶다.',
+      translation_tone:
+        '"포멀·감사 대응" 톤으로 모델 버전, 가드레일 준수, 민감 주제 필터링 현황을 데이터 중심으로 보고.',
+      monetization_hooks: [
+        'Transparency API/증빙 패키지(HYP-008B/C) 판매',
+        'Phase 018 로그 스키마·Phase 024 온보딩 자료에 KPI/CTA 매핑 포함',
+      ],
       onboarding_defaults: {
         notifications: ['Weekly proof'],
         categories: ['Exec Trend Roast'],

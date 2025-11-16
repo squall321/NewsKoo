@@ -17,6 +17,9 @@ export type SegmentProfile = {
   gains: string[];
   toggles: string[];
   default_filters: string[];
+  content_needs: string;
+  translation_tone: string;
+  monetization_hooks: string[];
   onboarding_defaults: {
     notifications: string[];
     categories: string[];
