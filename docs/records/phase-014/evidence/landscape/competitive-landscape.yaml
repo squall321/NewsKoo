@@ -1,0 +1,50 @@
+meta:
+  phase: 014
+  source_phase_doc: docs/phases/phase-014.md
+  generated_at: 2024-07-15
+  owner: strategy-research
+schema:
+  competitor_fields:
+    - id
+    - name
+    - category
+    - region_focus
+    - value_prop
+    - traffic_monthly
+    - retention_90d
+    - revenue_model
+    - localization_score
+    - risk_notes
+    - source_refs
+competitors:
+  - id: cmp-001
+    name: TBD
+    category: "news aggregator"
+    region_focus: APAC
+    value_prop: placeholder
+    traffic_monthly: null
+    retention_90d: null
+    revenue_model: []
+    localization_score: null
+    risk_notes: ""
+    source_refs:
+      - type: similarweb
+        url: https://example.com
+        snapshot_hash: TODO
+  - id: cmp-002
+    name: TBD
+    category: "community-driven"
+    region_focus: Global
+    value_prop: placeholder
+    traffic_monthly: null
+    retention_90d: null
+    revenue_model: []
+    localization_score: null
+    risk_notes: ""
+    source_refs: []
+data_quality:
+  guardrails:
+    translation: docs/strategy/translation-guardrails.md
+    storage_path: docs/records/phase-014/evidence/landscape
+  notes: |
+    Replace placeholder values with collected metrics (traffic, retention, revenue mix) and include at least 10 competitor rows.

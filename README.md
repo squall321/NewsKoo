@@ -126,3 +126,14 @@ npm run dev
 - 300 Phase 계획: `docs/phases/phase-001.md`부터 `phase-300.md`까지 각 페이즈별 목표, 작업, 산출물, 지표가 정리되어 있습니다.
 - 모든 진행 기록은 `docs/records/phase-XXX/` 경로에 보관하며, 번역 가드레일은 `docs/strategy/translation-guardrails.md`를 참고합니다.
 - 기여 전에는 [CONTRIBUTING.md](CONTRIBUTING.md)를 확인하고, Lint/Format 설정(`.editorconfig`, `backend/pyproject.toml`, `frontend/.eslintrc.json`, `.prettierrc.json`)을 준수해 주세요.
+
+### Phase 014 기록 요약 프로그램
+Phase 014의 Landscape/Scorecard/Workshop 증빙을 빠르게 훑어보고 싶다면 `scripts/phase014_records_report.py`를 실행해 요약본을 생성할 수 있습니다.
+
+```bash
+pip install -r backend/requirements.txt  # PyYAML 포함
+python scripts/phase014_records_report.py --format text
+python scripts/phase014_records_report.py --format json --records-root docs/records/phase-014
+```
+
+출력에는 경쟁 Landscape 커버리지, Scorecard 상위 경쟁사, 워크숍 일정/참석자 등의 지표가 포함되어 Phase 015~020 백로그와 연동하기 위한 상태를 한눈에 파악할 수 있습니다.

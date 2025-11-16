@@ -1,0 +1,3 @@
+competitor_id,name,function_score,content_score,brand_score,revenue_score,function_weight,content_weight,brand_weight,revenue_weight,total_score,story_hook,notes
+cmp-001,TBD,0,0,0,0,0.25,0.25,0.25,0.25,,"pending","fill after WS-014B review"
+cmp-002,TBD,0,0,0,0,0.25,0.25,0.25,0.25,,"pending",""
