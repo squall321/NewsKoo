@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Phase 013 Metrics Schema",
+  "description": "WS-013A~E 산출물이 공유하는 공통 계량 필드 정의",
+  "type": "object",
+  "required": [
+    "id",
+    "workstream",
+    "timestamp",
+    "issues",
+    "guardrails",
+    "metrics"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^(WS-013[A-E])-M[0-9]{3}$"
+    },
+    "workstream": {
+      "type": "string",
+      "enum": ["WS-013A", "WS-013B", "WS-013C", "WS-013D", "WS-013E"]
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "issues": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^#ISS-[0-9]+$"
+      },
+      "minItems": 1
+    },
+    "guardrails": {
+      "type": "object",
+      "required": ["cost", "copyright", "model"],
+      "properties": {
+        "cost": {"type": "boolean"},
+        "copyright": {"type": "boolean"},
+        "model": {"type": "boolean"}
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "tam": {"type": "number"},
+        "som": {"type": "number"},
+        "arpu": {"type": "number"},
+        "sample_size": {"type": "integer", "minimum": 1},
+        "conversion_rate": {"type": "number"},
+        "cost_per_call": {"type": "number"},
+        "latency_ms": {"type": "number"}
+      },
+      "additionalProperties": true
+    },
+    "notes": {
+      "type": "string"
+    }
+  },
+  "additionalProperties": false
+}
